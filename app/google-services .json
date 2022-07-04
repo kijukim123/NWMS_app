@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "865174888451",
+    "project_id": "wms-app-91b70",
+    "storage_bucket": "wms-app-91b70.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865174888451:android:ae26421e513ab51087ae36",
+        "android_client_info": {
+          "package_name": "com.nsoft.wms_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865174888451-2qm7s87km68l1hja3ifn3anqq4lpsvgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMEp1c0Enqnhsxq__H_CMntXjhXKTRkow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865174888451-2qm7s87km68l1hja3ifn3anqq4lpsvgs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

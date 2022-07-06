@@ -9,7 +9,7 @@ android:orientation="vertical"
 tools:context=".RegisterActivity">
 
 <EditText
-    android:id="@+id/et_reg_id"
+    android:id="@+id/et_reg_email"
     android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -18,7 +18,7 @@ tools:context=".RegisterActivity">
     android:layout_marginEnd="8dp"
     android:ems="10"
     android:hint="아이디"
-    android:inputType="textPersonName"
+    android:inputType="textEmailAddress"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@ tools:context=".RegisterActivity">
     android:inputType="textPersonName"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/et_reg_id" />
+    app:layout_constraintTop_toBottomOf="@id/et_reg_email" />
 
 <EditText
     android:id="@+id/et_name"

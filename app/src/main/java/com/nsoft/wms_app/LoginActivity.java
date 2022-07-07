@@ -7,8 +7,10 @@ import android.os.Bundle;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,16 +21,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nsoft.wms_app.R;
 
+import java.util.List;
+
 
 public class LoginActivity extends AppCompatActivity {
 
-    //private EditText etId, etPass;
-    private Button btnLogin, btnRegister;
-    //private LoginRequest loginRequest;
+    private EditText etEmail, etPass;        // 로그인 입력필드
+    private Button btnLogin;
+    private Spinner spinnerLang;
 
     private FirebaseAuth mFirebaseAuth;      // 파이어베이스 인증
     private DatabaseReference mDatabaseRef;  // 실시간 데이터베이스
-    private EditText etEmail, etPass;        // 로그인 입력필드
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_login_email);
         etPass = findViewById(R.id.et_login_pass);
         btnLogin = findViewById(R.id.btn_login1);
-        btnRegister = findViewById(R.id.btn_login2);
+        spinnerLang = findViewById(R.id.spinner_language);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("WMS_app");
 
-
+/*
         //회원가입 버튼을 클릭 시 수행
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+ */
+
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -80,5 +87,10 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
+
+
     }
 }

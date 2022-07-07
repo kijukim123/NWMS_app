@@ -19,10 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textView;
-    private EditText editText;
-    private Button button;
-    private Button buttonLogout;
+    //private TextView textView;
+    //private EditText editText;
+    //private Button button;
+    //private Button buttonLogout;
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -34,13 +34,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.textView);
-        editText = (EditText) findViewById(R.id.editText);
-        button = (Button) findViewById(R.id.button);
-        buttonLogout = (Button) findViewById(R.id.button_logout);
+        //textView = (TextView) findViewById(R.id.textView);
+        //editText = (EditText) findViewById(R.id.editText);
+        //button = (Button) findViewById(R.id.button);
+        //buttonLogout = (Button) findViewById(R.id.button_logout);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+
+        /*
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,5 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 conditionRef.setValue(editText.getText().toString());
             }
         });
+        */
+
+
+
     }
 }

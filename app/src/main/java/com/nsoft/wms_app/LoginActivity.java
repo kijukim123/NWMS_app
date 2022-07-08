@@ -21,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nsoft.wms_app.R;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 
@@ -32,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;      // 파이어베이스 인증
     private DatabaseReference mDatabaseRef;  // 실시간 데이터베이스
+
+    Connection connect;              //database Connect
+    String ConnectionResult = "";
 
 
     @Override
@@ -60,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
  */
 
 
-
+        /*
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,13 +90,41 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-                Toast.makeText(getApplicationContext(),"로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
-
-
+         */
 
 
     }
+
+    //database Connect
+    public void GetTextFromSQL(View v){
+        etEmail = findViewById(R.id.et_login_email);
+        etPass = findViewById(R.id.et_login_pass);
+
+        try{
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connect = connectionHelper.ConnectionClass();
+            if(connect!=null){
+                String query = "Select * from KKJ_EMP";
+                Statement st = connect.createStatement();
+                ResultSet rs = st.executeQuery(query);
+
+                while (rs.next()){
+                    etEmail.setText(rs.getString(1));
+                    etPass.setText(rs.getString(2));
+                }
+            }else{
+                ConnectionResult="Check Connection";
+            }
+        }catch(Exception ex){
+
+        }
+
+
+    }
+
+
 }

@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPass;        // 로그인 입력필드
     private Button btnLogin;
     private Spinner spinnerLang;
+    private String Email, Pwd;
 
     private FirebaseAuth mFirebaseAuth;      // 파이어베이스 인증
     private DatabaseReference mDatabaseRef;  // 실시간 데이터베이스
@@ -99,7 +100,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //database Connect
+    //데이터베이스 테이블에 있는 값을 안드로이드 텍스트뷰에 가져옴
+    //database Connect(GetDataFromSQL)
     public void GetTextFromSQL(View v){
         etEmail = findViewById(R.id.et_login_email);
         etPass = findViewById(R.id.et_login_pass);
@@ -120,11 +122,36 @@ public class LoginActivity extends AppCompatActivity {
                 ConnectionResult="Check Connection";
             }
         }catch(Exception ex){
-
         }
-
-
     }
+
+
+
+    //안드로이드에서 입력 값을 받아서 데이터베이스에 입력
+    public void InsertTextToSQL(View v){
+        Email = etEmail.getText().toString();
+        Pwd = etPass.getText().toString();
+
+        try{
+            ConnectionHelper connectionHelper = new ConnectionHelper();
+            connect = connectionHelper.ConnectionClass();
+            if(connect!=null){
+                String query = "INSERT INTO KKJ_EMP VALUES ('" + Email + "', '" + Pwd + "');";
+                Statement st = connect.createStatement();
+                ResultSet rs = st.executeQuery(query);
+
+                while (rs.next()){
+                    etEmail.setText(rs.getString(1));
+                    etPass.setText(rs.getString(2));
+                }
+
+            }else{
+                ConnectionResult="Check Connection";
+            }
+        }catch(Exception ex){
+        }
+    }
+
 
 
 }

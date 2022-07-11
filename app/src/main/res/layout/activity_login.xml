@@ -121,7 +121,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:background="@color/skyBlue"
-            android:onClick="InsertTextToSQL"
             android:text="Login"
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="@+id/et_level"

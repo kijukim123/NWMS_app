@@ -79,17 +79,39 @@ public class LoginActivity extends AppCompatActivity {
                     ConnectionHelper connectionHelper = new ConnectionHelper();
                     connect = connectionHelper.ConnectionClass();
                     if(connect!=null){
-                        String query = "INSERT INTO KKJ_EMP VALUES ('" + Email + "', '" + Pwd + "');";
+                        //String query = "INSERT INTO KKJ_EMP VALUES ('" + Email + "', '" + Pwd + "');";
+                        //프로시저 돌리기
+                        String query = "EXEC dbo.SP_PDA_NLOGIN_INQUERY_EXECUTE_LOGIN '" + Email + "', '" + Pwd + "', 'ko'";
                         Statement st = connect.createStatement();
                         ResultSet rs = st.executeQuery(query);
 
                         while (rs.next()){
-                            etEmail.setText(rs.getString(1));
-                            etPass.setText(rs.getString(2));
+                            //Toast.makeText(LoginActivity.this, rs.getString(1), Toast.LENGTH_SHORT).show();
+                            if(rs.getString(1).isEmpty()!=true){
+                                Toast.makeText(LoginActivity.this, "비밀번호가 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+                            }else if(rs.getString(1).isEmpty()){
+                                Toast.makeText(LoginActivity.this, "로그인이 성공적으로 되었습니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            /*
+                            //프로시저 돌린 후 알맞은 사용자일 경우 메인액티비티로 화면전환
+                            if(rs.getString(1) == "Y"){
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(LoginActivity.this, "비밀번호가 잘못 되었습니다.ㅏ", Toast.LENGTH_SHORT).show();
+                            }
 
-                            Toast.makeText(LoginActivity.this, "입력한 ID : " + etEmail + " 입력한 PWD : " + etPass, Toast.LENGTH_SHORT).show();
-                            System.out.println("입력한 아이디 : " + etEmail);
-                            System.out.println("입력한 패스워드 : " + etPass);
+                             */
+
+
+                            //etEmail.setText(rs.getString(1));
+                            //etPass.setText(rs.getString(2));
+
+                            //Toast.makeText(LoginActivity.this, "입력한 ID : " + etEmail + " 입력한 PWD : " + etPass, Toast.LENGTH_SHORT).show();
+                            //System.out.println("입력한 아이디 : " + etEmail);
+                            //System.out.println("입력한 패스워드 : " + etPass);
                         }
 
                     }else{

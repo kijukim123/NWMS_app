@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,70 +21,32 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    //private TextView textView;
-    //private EditText editText;
-    //private Button button;
-    //private Button buttonLogout;
-
-    private FirebaseAuth mFirebaseAuth;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference conditionRef = mRootRef.child("text");
-
+    ImageButton back;
+    ImageButton logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        //textView = (TextView) findViewById(R.id.textView);
-        //editText = (EditText) findViewById(R.id.editText);
-        //button = (Button) findViewById(R.id.button);
-        //buttonLogout = (Button) findViewById(R.id.button_logout);
+        back = findViewById(R.id.back);
+        logout = findViewById(R.id.logout);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-
-
-        /*
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //로그아웃 하기
-                mFirebaseAuth.signOut();
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        conditionRef.addValueEventListener(new ValueEventListener() {
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String text = dataSnapshot.getValue(String.class);
-                textView.setText(text);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PopupActivity.class);
+                startActivity(intent);
             }
         });
-
-        button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                conditionRef.setValue(editText.getText().toString());
-            }
-        });
-        */
-
-
-
     }
 }

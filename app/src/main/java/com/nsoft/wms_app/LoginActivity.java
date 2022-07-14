@@ -53,20 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("WMS_app");
 
-/*
-        //회원가입 버튼을 클릭 시 수행
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("btnRegister Listener called");
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
-
- */
-
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                         ResultSet rs = st.executeQuery(query);
 
                         while (rs.next()){
-                            //Toast.makeText(LoginActivity.this, rs.getString(1), Toast.LENGTH_SHORT).show();
                             if(rs.getString(1).isEmpty()!=true){
                                 Toast.makeText(LoginActivity.this, "비밀번호가 잘못되었습니다.", Toast.LENGTH_SHORT).show();
                             }else if(rs.getString(1).isEmpty()){
@@ -94,24 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
-                            /*
-                            //프로시저 돌린 후 알맞은 사용자일 경우 메인액티비티로 화면전환
-                            if(rs.getString(1) == "Y"){
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-                            }else{
-                                Toast.makeText(LoginActivity.this, "비밀번호가 잘못 되었습니다.ㅏ", Toast.LENGTH_SHORT).show();
-                            }
-
-                             */
-
-
-                            //etEmail.setText(rs.getString(1));
-                            //etPass.setText(rs.getString(2));
-
-                            //Toast.makeText(LoginActivity.this, "입력한 ID : " + etEmail + " 입력한 PWD : " + etPass, Toast.LENGTH_SHORT).show();
-                            //System.out.println("입력한 아이디 : " + etEmail);
-                            //System.out.println("입력한 패스워드 : " + etPass);
                         }
 
                     }else{
@@ -172,10 +139,6 @@ public class LoginActivity extends AppCompatActivity {
                 while (rs.next()){
                     etEmail.setText(rs.getString(1));
                     etPass.setText(rs.getString(2));
-
-                    Toast.makeText(LoginActivity.this, "입력한 ID : " + Email + " 입력한 PWD : " + Pwd, Toast.LENGTH_SHORT).show();
-                    System.out.println("입력한 아이디 : " + Email);
-                    System.out.println("입력한 패스워드 : " + Pwd);
                 }
 
             }else{

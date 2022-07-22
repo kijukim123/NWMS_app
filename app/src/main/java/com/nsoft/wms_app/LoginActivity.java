@@ -149,5 +149,43 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    //버전 비교 함수
+    public static boolean compareVersion(String appVersion, String compareVersion) {
+        boolean isNeedUpdate = false;
+        String[] arrX = appVersion.split("[.]");
+        String[] arrY = compareVersion.split("[.]");
+
+        int length = Math.max(arrX.length, arrY.length);
+
+        for(int i = 0; i < length; i++){
+            int x, y;
+            try {
+                x = Integer.parseInt(arrX[i]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                x = 0;
+            }
+            try {
+                y = Integer.parseInt(arrY[i]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                y = 0;
+            }
+
+            if(x > y) {
+                // 앱 버전이 큼
+                isNeedUpdate = false;
+                break;
+            }else if(x < y){
+                // 비교 버전이 큼
+                isNeedUpdate = true;
+                break;
+            } else {
+                // 버전 동일
+                isNeedUpdate = false;
+            }
+        }
+        return isNeedUpdate;
+    }
+
+
 
 }

@@ -21,14 +21,17 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton back;
-    ImageButton logout;
+    private ImageButton back;
+    private ImageButton logout;
+    private Button btn_legacy_barcode;
+    private Button btn_barcode_input;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
 
         back = findViewById(R.id.back);
         logout = findViewById(R.id.logout);
@@ -48,5 +51,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+
+
+        btn_legacy_barcode = findViewById(R.id.legacy_barcode);
+        btn_legacy_barcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_barcode_input = findViewById(R.id.btn_barcode_input);
+        btn_barcode_input.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BarcodeReceiving.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

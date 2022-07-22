@@ -28,6 +28,7 @@ public class ConnectionHelper {
         try{
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             ConnectionURL = "jdbc:jtds:sqlserver://" + ip + ";" + "databasename=" + database + ";user=" + uname + ";password=" + pass + ";";
+            //ConnectionURL = "jdbc:jtds:sqlserver://"+ip + ":" + port + ";" + "databasename=" + database+";user="+uname+";password="+pass+";";
             connection = DriverManager.getConnection(ConnectionURL);
 
         }catch (Exception ex){

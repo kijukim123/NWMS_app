@@ -1,5 +1,7 @@
 package com.nsoft.wms_app;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,123 +14,265 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.m3.sdk.scannerlib.BarcodeListener;
+import com.m3.sdk.scannerlib.BarcodeManager;
 
 import org.w3c.dom.Document;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import com.m3.sdk.scannerlib.Barcode;
+import com.m3.sdk.scannerlib.BarcodeListener;
+import com.m3.sdk.scannerlib.BarcodeManager;
+import com.m3.sdk.scannerlib.Barcode.Symbology;
+
+import javax.xml.transform.Result;
+
 
 public class TestActivity extends AppCompatActivity {
 
-    //앱 현재 버전
-    private final String APP_VERSION_NAME = BuildConfig.VERSION_NAME;
-    private TextView textView;
-    private Button ButtonURL;
+    private Barcode mBarcode = null;
+    private BarcodeListener mListener = null;
+    private BarcodeManager mManager = null;
+    private com.m3.sdk.scannerlib.Barcode.Symbology mSymbology = null;
+
+    private Button  button;
+    private TextView TVbarcode;
+    private TextView TVbarcode2;
+    private String   Sbarcode;
+    private String   mTvResult;
+
+    Connection connect;              //database Connect
+    String ConnectionResult = "";
+
+
+
+    private int i;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_test);
 
-        textView = findViewById(R.id.tv_barcode);
-        //텍스트뷰에서 현재 앱 버전 확인
-        //textView.setText(APP_VERSION_NAME);
-        //System.out.println("현재앱 버전 : "+ APP_VERSION_NAME);
+        TVbarcode = findViewById(R.id.tv_barcode);
+        TVbarcode2 = findViewById(R.id.tv_barcode2);
+        button = findViewById(R.id.btnUrl);
 
-        ButtonURL = findViewById(R.id.btnUrl);
-        ButtonURL.setOnClickListener(new View.OnClickListener() {
+
+        ArrayList<String> array_bar = new ArrayList<>();
+
+
+        Intent intent = getIntent();
+        mTvResult = (String) intent.getStringExtra("intentBarcode");
+
+
+
+
+        //ETbarcode.setText(mTvResult);
+        TVbarcode.setText(mTvResult);
+        System.out.println(Sbarcode);
+        Sbarcode = TVbarcode.getText().toString();
+
+
+
+        barcodescan(TVbarcode);
+        TVbarcode.setText(mTvResult);
+
+
+
+        TVbarcode.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                //Intent intentURL = new Intent(Intent.ACTION_VIEW, Uri.parse("ftp://192.168.0.202:2022/"));
-                //Intent intentURL = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.0.202/"));
-                //startActivity(intentURL);
-                textView.setText(readFromClipboard());
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e(TAG, "beforeTextChanged() - charSequence : " + charSequence);
+                System.out.println("*************beforeTextChanged*************");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.e(TAG, "onTextChanged() - charSequence : " + charSequence);
+                System.out.println("*************onTextChanged*************");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Log.e(TAG, "afterTextChanged() - editable : " + editable.toString());
+                System.out.println("*************afterTextChanged*************");
+                Sbarcode = TVbarcode.getText().toString();
+                System.out.println("찍힌 바코드 : " + TVbarcode);
+                System.out.println("찍힌 S바코드 : " + Sbarcode);
+                System.out.println("찍힌 Rewult바코드 : " + mTvResult);
+
+
+                try {
+                    ConnectionHelper connectionHelper = new ConnectionHelper();
+                    connect = connectionHelper.ConnectionClass();
+                    if (connect != null) {
+                        //String query = "INSERT INTO KKJ_EMP VALUES ('" + Email + "', '" + Pwd + "');";
+                        //프로시저 돌리기
+                        String query = "INSERT INTO BARCODE_TEST VALUES ('" + Sbarcode + "')select * from BARCODE_TEST";
+                        Statement st = connect.createStatement();
+                        ResultSet rs = st.executeQuery(query);
+
+                        while (rs.next()) {
+                            //Toast.makeText(getApplicationContext(), "데이터베이스에 값 넣기", Toast.LENGTH_SHORT).show();
+                            if (rs.getString(1).isEmpty() != true) {
+                                Toast.makeText(TestActivity.this, rs.getString(1) + rs.getString(2) + rs.getString(3), Toast.LENGTH_SHORT).show();
+                                //array_bar.add(rs.getString(1));
+                                //array_bar.add(rs.getString(2));
+                                //array_bar.add(rs.getString(3));
+                                System.out.println("55555555555555555555555");
+                                //System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
+                            } else {
+                                ConnectionResult = "Check Connection";
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                }
+
+            }
+
+                /*
+                try{
+                    ConnectionHelper connectionHelper = new ConnectionHelper();
+                    connect = connectionHelper.ConnectionClass();
+                    if(connect!=null){
+                        //String query = "INSERT INTO KKJ_EMP VALUES ('" + Email + "', '" + Pwd + "');";
+                        //프로시저 돌리기
+                        String query = "select * from BARCODE_TEST";
+                        Statement st = connect.createStatement();
+                        ResultSet rs = st.executeQuery(query);
+
+                        while (rs.next()){
+                            if(rs.getString(1).isEmpty()!=true){
+                                Toast.makeText(getApplicationContext(), rs.getString(1) + rs.getString(2) + rs.getString(3), Toast.LENGTH_SHORT).show();
+                                array_bar.add(rs.getString(1));
+                                array_bar.add(rs.getString(2));
+                                array_bar.add(rs.getString(3));
+                                System.out.println("55555555555555555555555");
+                                System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
+                            }else if(rs.getString(1).isEmpty()){
+                                Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                    }else{
+                        ConnectionResult="Check Connection";
+                    }
+                }catch(Exception ex){
+                }
+                */
+
+
+
+
+        });
+
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    ConnectionHelper connectionHelper = new ConnectionHelper();
+                    connect = connectionHelper.ConnectionClass();
+                    if(connect!=null){
+
+                        String query = "select * from BARCODE_TEST";
+                        Statement st = connect.createStatement();
+                        ResultSet rs = st.executeQuery(query);
+
+                        while (rs.next()){
+                            if(rs.getString(1).isEmpty()!=true){
+                                //Toast.makeText(getApplicationContext(), rs.getString(1) + rs.getString(2) + rs.getString(3), Toast.LENGTH_SHORT).show();
+                                //System.out.println("55555555555555555555555");
+                                //System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
+                                System.out.println(rs.getString(1));
+                                array_bar.add(rs.getString(1));
+                                System.out.println(array_bar);
+                            }else if(rs.getString(1).isEmpty()){
+                                Toast.makeText(getApplicationContext(), "빈값.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                    }else{
+                        ConnectionResult="Check Connection";
+                    }
+                }catch(Exception ex){
+                    Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
-        //dispatchKeyEvent(KeyEvent keyEvent);
-        try{
-            if(dispatchKeyEvent1(null)){Toast.makeText(TestActivity.this, "someTHing", Toast.LENGTH_SHORT).show();}
-            System.out.println(dispatchKeyEvent1(null));
-            }catch(Exception e){
-            Toast.makeText(TestActivity.this, "에러", Toast.LENGTH_SHORT).show();
-        }
-
-
-        //textView.setText(readFromClipboard());
-
     }
 
 
+    public void barcodescan(TextView mTvResult) {
+        // lib
+        Barcode mBarcode = null;
+        BarcodeListener mListener = null;
+        BarcodeManager mManager = null;
+        Barcode.Symbology mSymbology = null;
 
-    //바코드 확인 관련 코드(zxing Library)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        //ui
+        mBarcode = new Barcode(this);
+        mManager = new BarcodeManager(this);
+        mSymbology = mBarcode.getSymbologyInstance();
 
-        if(result != null){
-            if(result.getContents() == null){
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(this, "Scanned:" + result.getContents(), Toast.LENGTH_LONG).show();
+        mBarcode.scanStart();
+
+        mListener = new BarcodeListener() {
+
+            @Override
+            public void onGetSymbology(int nSymbol, int nVal) {
+                Log.i("ScannerTest", "onGetSymbology result=" + nSymbol + ", " + nVal);
             }
-        }else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-
-    //PDA 바코드 관련 코드(액션감지?)
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        if (KeyEvent.ACTION_UP == event.getAction() && event.getDeviceId() == -1 && event.getFlags() == 8 && event.getKeyCode() == 66 && event.getSource() == 257) {
-            String scan = readFromClipboard();
-        }
-        return false;
-    }
-
-    //PDA 바코드 관련 코드(스캔한 바코드 클립보드에서 불러오기?)
-    public String readFromClipboard() {
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            if (clipboard.hasPrimaryClip()) {
-                ClipDescription description = clipboard.getPrimaryClipDescription();
-                ClipData data = clipboard.getPrimaryClip();
-                if (data != null && description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
-                    return String.valueOf(data.getItemAt(0).getText());
+            @Override
+            public void onBarcode(String strBarcode) {
+                Log.i("ScannerTest1", "result=" + strBarcode);
+                mTvResult.setText(strBarcode);
+                //mTvResult.toString();
+                //Intent intent = new Intent(TestActivity.this, TestActivity.class);
+                Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+                intent.putExtra("intentBarcode", strBarcode);
+                startActivity(intent);
             }
-        }
-        return null;
+            @Override
+            public void onBarcode(String barcode, String codeType) {
+                Log.i("ScannerTest2", "result=" + barcode);
+                //mTvResult.setText(barcode);
+            }
+        };
+        mManager.addListener(mListener);
+        mBarcode.scanDispose();
     }
 
-    //@Override
-    public boolean dispatchKeyEvent1(KeyEvent KEvent)
-    {
-        int keyaction = KEvent.getAction();
 
-        if(keyaction == KeyEvent.ACTION_DOWN)
-        {
-            int keycode = KEvent.getKeyCode();
-            int keyunicode = KEvent.getUnicodeChar(KEvent.getMetaState() );
-            char character = (char) keyunicode;
-
-            System.out.println("DEBUG MESSAGE KEY=" + character + " KEYCODE=" +  keycode);
-        }
-
-
-        return super.dispatchKeyEvent(KEvent);
-    }
 
 }
 

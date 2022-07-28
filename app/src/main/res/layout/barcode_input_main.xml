@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BarcodeReceiving"
+    tools:context=".BarcodeInput"
     android:orientation="vertical">
 
 
@@ -100,6 +100,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <EditText
+                android:id="@+id/et_pre_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="@color/NsoftBlue"
+                android:textSize="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <Button
                 android:id="@+id/button"
                 android:layout_width="70dp"
@@ -158,7 +170,8 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
-            <EditText
+            <TextView
+                android:id="@+id/tv_barcode_location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -219,7 +232,9 @@
 
 
 
-            <LinearLayout
+
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
@@ -229,7 +244,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-            </LinearLayout>
+                <ListView
+                    android:id="@+id/listview_barcode_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
 
 
 
@@ -242,14 +262,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:text="dd"
+                android:text="0 Scanned"
                 android:textSize="13dp"
                 android:background="@drawable/edge"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:text="dd"
+                android:text="입고위치를 스캔하세요"
                 android:textSize="13dp"
                 android:background="@drawable/edge"
                 />

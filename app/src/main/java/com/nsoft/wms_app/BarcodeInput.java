@@ -166,7 +166,7 @@ public class BarcodeInput extends AppCompatActivity {
 
 
                     }
-                    else if(SPreInputR.startsWith("A") && SPreInputA.length() == 16 && RgBtn1Click == "1"){  //EditText가 A로 시작하고, 입고처리 버튼 ON 일때
+                    else if(SPreInputR.startsWith("A") && SPreInputA.length() == 16 && RgBtn1Click == "1"){  //EditText가 A로 시작하고, 입고 취소 버튼 ON 일때
                         //Toast.makeText(getApplicationContext(), "A scanned", Toast.LENGTH_SHORT).show();
                         SPreInputR = LocationBarcodeInput.getText().toString();
                         try{  //상품바코드 데이터베이스 추가
@@ -182,15 +182,26 @@ public class BarcodeInput extends AppCompatActivity {
                                 ResultSet rs = st.executeQuery(query);
 
                                 while (rs.next()){
+                                    //입고가 제대로 됐을 경우
                                     if(rs.getString(1).isEmpty()!=true) {
                                         LIST_Barcode_Input.add(rs.getString(1));
                                         LIST_Name_Input.add(rs.getString(3));
                                         LIST_Number_Input.add(rs.getString(4));
                                         Alert1.setText(LIST_Barcode_Input.size() + " Scanned");
-                                        CustomListBarcodeInput adapter = new CustomListBarcodeInput(BarcodeInput.this);
+                                        CustomListBarcodeInput adapterInput = new CustomListBarcodeInput(BarcodeInput.this);
                                         BarcodeInputListview = (ListView) findViewById(R.id.listview_barcode_input);
-                                        BarcodeInputListview.setAdapter(adapter);
+                                        BarcodeInputListview.setAdapter(adapterInput);
                                     }
+                                    /*
+                                    //입고가 제대로 안됐을 경우
+                                    else if(rs.getString(5) != "완료되었습니다."){
+                                        //데이터베이스 탐색(TB_BM_BCOD)
+                                        if(){   //BM바코드에 있을 경우
+                                            //데이터베이스 탐색(TB_WM_BCOD)후 값이 이미 있다면 이미 있는 값이라고 알림
+                                        }else if(){   //BM바코드에 없을 경우
+                                            //Alert2에 등록되지 않은 바코드라고 알림
+                                        }
+                                    }*/
                                 }
                             }else{
                                 ConnectionResult="Check Connection";
@@ -199,7 +210,7 @@ public class BarcodeInput extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
                         }   //상품바코드 데이터베이스 추가끝
                     }
-                    else if(SPreInputR.startsWith("A") && SPreInputA.length() == 16 && RgBtn2Click == "1"){  //EditText가 A로 시작하고, 입고처리 버튼 ON 일때
+                    else if(SPreInputR.startsWith("A") && SPreInputA.length() == 16 && RgBtn2Click == "1"){  //EditText가 A로 시작하고, 입고 취소 버튼 ON 일때
                         //Toast.makeText(getApplicationContext(), "A scanned", Toast.LENGTH_SHORT).show();
                         SPreInputR = LocationBarcodeInput.getText().toString();
                         try{  //상품바코드 데이터베이스 추가
@@ -217,9 +228,9 @@ public class BarcodeInput extends AppCompatActivity {
                                         LIST_Name_Cancel.add(rs.getString(5));
                                         LIST_Number_Cancel.add(rs.getString(6));
                                         Alert1.setText(LIST_Barcode_Cancel.size() + " Scanned");
-                                        CustomListBarcodeCancel adapter = new CustomListBarcodeCancel(BarcodeInput.this);
+                                        CustomListBarcodeCancel adapterCancel = new CustomListBarcodeCancel(BarcodeInput.this);
                                         BarcodeCancelListview = (ListView) findViewById(R.id.listview_barcode_cancel);
-                                        BarcodeCancelListview.setAdapter(adapter);
+                                        BarcodeCancelListview.setAdapter(adapterCancel);
                                     }
                                 }
                             }else{
@@ -256,6 +267,8 @@ public class BarcodeInput extends AppCompatActivity {
         rg_btn1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                //Alert1 초기화
+                Alert1.setText("0 Scanned");
                 //버튼 클릭 이벤트시에만 색깔 나오고, 아닐경우 회색표시
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     rg_btn1.setBackgroundColor(Color.LTGRAY);
@@ -270,9 +283,9 @@ public class BarcodeInput extends AppCompatActivity {
         rg_btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomListBarcodeInput adapterInput = new CustomListBarcodeInput(BarcodeInput.this);
-                BarcodeInputListview = (ListView) findViewById(R.id.listview_barcode_input);
-                BarcodeInputListview.setAdapter(adapterInput);
+                //CustomListBarcodeInput adapterInput = new CustomListBarcodeInput(BarcodeInput.this);
+                //BarcodeInputListview = (ListView) findViewById(R.id.listview_barcode_input);
+                //BarcodeInputListview.setAdapter(adapterInput);
                 //버튼이 눌러져 있는지 아닌지 표시(버튼이 눌러져있으면 "1", 안눌러져있으면 "0")
                 //RgBtn1Click.replace(RgBtn1Click, "1");
                 RgBtn1Click = "1";
@@ -284,6 +297,7 @@ public class BarcodeInput extends AppCompatActivity {
                 CustomListBarcodeCancel adapterCancel = new CustomListBarcodeCancel(BarcodeInput.this);
                 BarcodeCancelListview = (ListView) findViewById(R.id.listview_barcode_cancel);
                 BarcodeCancelListview.setAdapter(adapterCancel);
+
             }
         });
 
@@ -308,9 +322,9 @@ public class BarcodeInput extends AppCompatActivity {
         rg_btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CustomListBarcodeCancel adapterCancel = new CustomListBarcodeCancel(BarcodeInput.this);
-                BarcodeCancelListview = (ListView) findViewById(R.id.listview_barcode_cancel);
-                BarcodeCancelListview.setAdapter(adapterCancel);
+                //CustomListBarcodeCancel adapterCancel = new CustomListBarcodeCancel(BarcodeInput.this);
+                //BarcodeCancelListview = (ListView) findViewById(R.id.listview_barcode_cancel);
+                //BarcodeCancelListview.setAdapter(adapterCancel);
                 //버튼이 눌러져 있는지 아닌지 표시(버튼이 눌러져있으면 "1", 안눌러져있으면 "0")
                 RgBtn1Click = "0";
                 RgBtn2Click = "1";

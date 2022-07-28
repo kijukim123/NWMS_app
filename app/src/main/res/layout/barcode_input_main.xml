@@ -104,7 +104,7 @@
                 android:id="@+id/et_pre_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="150dp"
+                android:layout_marginLeft="120dp"
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textColor="@color/NsoftBlue"
@@ -138,7 +138,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/edge2"
-                android:text="바코드입고"
+                android:text="입고 처리"
                 android:textStyle="bold" />
 
             <Button
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/edge2"
-                android:text="입고취소"
+                android:text="입고 취소"
                 android:textStyle="bold" />
 
         </RadioGroup>
@@ -260,6 +260,7 @@
 
 
             <TextView
+                android:id="@+id/barcode_input_alert1"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:text="0 Scanned"
@@ -267,6 +268,7 @@
                 android:background="@drawable/edge"
                 />
             <TextView
+                android:id="@+id/barcode_input_alert2"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:text="입고위치를 스캔하세요"

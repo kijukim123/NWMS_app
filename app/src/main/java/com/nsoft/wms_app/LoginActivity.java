@@ -3,6 +3,7 @@ package com.nsoft.wms_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -33,9 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Spinner spinnerLang;
     private String Email, Pwd;
-
-    private FirebaseAuth mFirebaseAuth;      // 파이어베이스 인증
-    private DatabaseReference mDatabaseRef;  // 실시간 데이터베이스
+    private Context mContext;
 
     Connection connect;              //database Connect
     String ConnectionResult = "";
@@ -50,8 +49,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login1);
         spinnerLang = findViewById(R.id.spinner_language);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("WMS_app");
+        mContext = this;
+
 
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 Email = etEmail.getText().toString();
                 Pwd = etPass.getText().toString();
+
+                //쿠키에 UserId값 저장
+                PreferenceManager.setString(mContext, "UID", Email);
 
                 try{
                     ConnectionHelper connectionHelper = new ConnectionHelper();

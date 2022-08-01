@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton logout;
     private Button btn_legacy_barcode;
     private Button btn_barcode_input;
+    private Button btn_barcode_move;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, BarcodeInput.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_barcode_move = findViewById(R.id.btn_barcode_move);
+        btn_barcode_move.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BarcodeMove.class);
                 startActivity(intent);
             }
         });

@@ -42,8 +42,8 @@ import java.util.regex.Pattern;
 
 public class BarcodeInput extends AppCompatActivity {
 
-    private Button rg_btn1;
-    private Button rg_btn2;
+    private Button btn_input;
+    private Button btn_cancel;
     private Button ResetButton;
     private ImageButton back;
     private ImageButton logout;
@@ -80,8 +80,8 @@ public class BarcodeInput extends AppCompatActivity {
         Alert1 = findViewById(R.id.barcode_input_alert1);
         Alert2 = findViewById(R.id.barcode_input_alert2);
 
-        rg_btn1 = findViewById(R.id.rg_btn1);
-        rg_btn2 = findViewById(R.id.rg_btn2);
+        btn_input = findViewById(R.id.rg_btn1);
+        btn_cancel = findViewById(R.id.rg_btn2);
         ResetButton = findViewById(R.id.button);
 
         EtPreInput = findViewById(R.id.et_pre_input);
@@ -360,23 +360,23 @@ public class BarcodeInput extends AppCompatActivity {
 
 
         //바코드 입고 버튼
-        rg_btn1.setOnTouchListener(new View.OnTouchListener() {
+        btn_input.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //Alert1 초기화
                 Alert1.setText("0 Scanned");
                 //버튼 클릭 이벤트시에만 색깔 나오고, 아닐경우 회색표시
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    rg_btn1.setBackgroundColor(Color.LTGRAY);
+                    btn_input.setBackgroundColor(Color.LTGRAY);
                 }else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    rg_btn1.setBackgroundColor(R.drawable.colors);
-                    rg_btn2.setBackgroundColor(Color.LTGRAY);
+                    btn_input.setBackgroundColor(R.drawable.colors);
+                    btn_cancel.setBackgroundColor(Color.LTGRAY);
 
                 }
                 return false;
             }
         });
-        rg_btn1.setOnClickListener(new View.OnClickListener() {
+        btn_input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Alert2.setTextColor(Color.BLACK);
@@ -399,21 +399,21 @@ public class BarcodeInput extends AppCompatActivity {
 
 
         //바코드 출고 버튼
-        rg_btn2.setOnTouchListener(new View.OnTouchListener() {
+        btn_cancel.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //버튼 클릭 이벤트시에만 색깔 나오고, 아닐경우 회색표시
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    rg_btn2.setBackgroundColor(Color.LTGRAY);
+                    btn_cancel.setBackgroundColor(Color.LTGRAY);
                 }else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    rg_btn2.setBackgroundColor(R.drawable.colors);
-                    rg_btn1.setBackgroundColor(Color.LTGRAY);
+                    btn_cancel.setBackgroundColor(R.drawable.colors);
+                    btn_input.setBackgroundColor(Color.LTGRAY);
 
                 }
                 return false;
             }
         });
-        rg_btn2.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Alert2.setTextColor(Color.BLACK);

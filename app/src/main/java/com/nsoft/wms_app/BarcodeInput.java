@@ -14,6 +14,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -159,6 +160,193 @@ public class BarcodeInput extends AppCompatActivity {
             }
         },new InputFilter.LengthFilter(20)});
 
+
+
+
+
+
+        //엔터키 방식
+        EtPreInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                switch(keyCode){
+                    case KeyEvent.KEYCODE_ENTER:
+                        SPreInput = EtPreInput.getText().toString();
+                        System.out.println("!!!!!!!!!!!!!!!!!!!EnterKeyOn!!!!!!!!!!!!!!!!!!!!");
+                        System.out.println(SPreInput);
+
+
+                        if(SPreInput.startsWith("R")){
+                            LocationBarcodeInput.setText(SPreInput);
+                            SPreInputR = SPreInput;
+
+                            try{  //렉바코드 데이터베이스 조회
+                                ConnectionHelper connectionHelper = new ConnectionHelper();
+                                connect = connectionHelper.ConnectionClass();
+
+                                if(connect!=null){
+                                    //바코드 타입 조회
+                                    String query4 = "EXEC SP_PDA_COMMON_BARCODE_TYPE '" + SPreInputR + "','ko'";
+                                    Statement st4 = connect.createStatement();
+                                    ResultSet rs4 = st4.executeQuery(query4);
+                                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!데이터베이스 연결만 됐을 경우!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                    while (rs4.next()){
+                                        //조회가 제대로 됐을 경우
+                                        if(rs4.getString(1).isEmpty()!=true) {
+                                            LocationBarcodeInput.setText(rs4.getString(5));
+                                            LIST_Name_Input.clear();
+                                            LIST_Number_Input.clear();
+                                            LIST_Barcode_Input.clear();
+                                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!조회가 제대로 됐을 경우!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                            System.out.println(rs4.getString(5));
+                                            EtPreInput.setText("");
+                                        }
+                                    }
+                                }else{
+                                    ConnectionResult="Check Connection";
+                                }
+                            }catch(Exception ex){
+                                Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+
+                        else if(SPreInput.startsWith("A") && RgBtn1Click == "1"){
+                            SPreInputA = SPreInput;
+                            try{  //상품바코드 데이터베이스 추가
+                                ConnectionHelper connectionHelper = new ConnectionHelper();
+                                connect = connectionHelper.ConnectionClass();
+
+                                System.out.println(SPreInput);
+                                if(connect!=null){
+                                    //입고처리 프로시저 돌리기
+                                    String query = "EXEC dbo.SP_PDA_WM00010_SAVE_VALIDATION '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'";
+                                    System.out.println("EXEC dbo.SP_PDA_WM00010_SAVE_VALIDATION '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'");
+                                    Statement st = connect.createStatement();
+                                    ResultSet rs = st.executeQuery(query);
+
+                                    while (rs.next()){
+                                        System.out.println(rs.getString(2) + "/////////////////////////////////////////");
+                                        //입고가 제대로 됐을 경우
+                                        if(rs.getString(2).isEmpty()==true) {
+                                            try{
+                                                if(connect!=null){  //데이터베이스 저장 프로시저 실행(TB_WM_BCOD)
+                                                    String query3 = "EXEC dbo.SP_PDA_WM00010_SAVE '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'";
+                                                    Statement st3 = connect.createStatement();
+                                                    ResultSet rs3 = st3.executeQuery(query3);
+
+                                                    while (rs3.next()){
+                                                        System.out.println("반환값 : " + rs3.getString(5).toString().length());
+                                                        if(rs3.getString(1).isEmpty()!=true) {
+                                                            LIST_Barcode_Input.add(rs3.getString(1));
+                                                            LIST_Name_Input.add(rs3.getString(3));
+                                                            LIST_Number_Input.add(rs3.getString(4));
+                                                            Alert1.setText(LIST_Barcode_Input.size() + " Scanned");
+                                                            Alert2.setTextColor(Color.BLACK);
+                                                            Alert2.setText("입고 처리가 완료되었습니다.");
+                                                            CustomListBarcodeInput adapterInput = new CustomListBarcodeInput(BarcodeInput.this);
+                                                            BarcodeInputListview = (ListView) findViewById(R.id.listview_barcode_input);
+                                                            BarcodeInputListview.setAdapter(adapterInput);
+                                                        }
+
+                                                    }
+                                                }else{
+                                                    ConnectionResult="Check Connection";
+                                                }
+                                            }catch(Exception e){
+                                                //Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        }else if(rs.getString(2).length() == 15){
+                                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!존재하지 않는 바코드입니다.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                            Alert2.setTextColor(Color.RED);
+                                            Alert2.setText("존재하지 않는 바코드입니다.");
+                                        }
+                                        else if(rs.getString(2).length() == 14){
+                                            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!이미 입고된 바코드입니다.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                            Alert2.setTextColor(Color.RED);
+                                            Alert2.setText("이미 입고된 바코드 입니다.");
+                                        }
+                                    }
+                                }else{
+                                    ConnectionResult="Check Connection";
+                                }
+                            }catch(Exception ex){
+                                //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                                Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+
+                        else if(SPreInput.startsWith("A") && RgBtn2Click == "1"){
+                            SPreInputA = SPreInput;
+                            try{  //상품바코드 데이터베이스 추가
+                                ConnectionHelper connectionHelper = new ConnectionHelper();
+                                connect = connectionHelper.ConnectionClass();
+                                if(connect!=null){
+                                    //입고 취소 프로시저 돌리기
+                                    String query = "EXEC dbo.SP_PDA_WM00010_CANCEL_BARCODE '" + SPreInputA + "','" + UserId +  "','ko'";
+                                    Statement st = connect.createStatement();
+                                    ResultSet rs = st.executeQuery(query);
+
+                                    while (rs.next()){
+
+                                        if(rs.getString(2).length() == 8) {
+                                            LIST_Barcode_Cancel.add(rs.getString(3));
+                                            LIST_Name_Cancel.add(rs.getString(5));
+                                            LIST_Number_Cancel.add(rs.getString(6));
+                                            Alert1.setText(LIST_Barcode_Cancel.size() + " Scanned");
+                                            Alert2.setTextColor(Color.BLACK);
+                                            Alert2.setText("입고 취소가 완료되었습니다.");
+                                            CustomListBarcodeCancel adapterCancel = new CustomListBarcodeCancel(BarcodeInput.this);
+                                            BarcodeCancelListview = (ListView) findViewById(R.id.listview_barcode_cancel);
+                                            BarcodeCancelListview.setAdapter(adapterCancel);
+                                        }
+                                        else if(rs.getString(2).length() == 14){
+                                            Alert2.setTextColor(Color.RED);
+                                            Alert2.setText("입고된 바코드가 아닙니다.");
+                                        }
+                                        else{
+                                            Alert2.setTextColor(Color.RED);
+                                            Alert2.setText("존재하지 않는 바코드 입니다.");
+                                        }
+
+
+                                    }
+                                }else{
+                                    ConnectionResult="Check Connection";
+                                }
+                            }catch(Exception ex){
+                                //Toast.makeText(getApplicationContext(), "데이터베이스에 안들어갔습니다.", Toast.LENGTH_SHORT).show();
+                            }   //상품바코드 데이터베이스 추가끝
+                        }
+
+                }
+                return false;
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+        //textWatcher 방식으로 1글자씩 받아서 비교하기
         EtPreInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -345,6 +533,18 @@ public class BarcodeInput extends AppCompatActivity {
         });
 
 
+
+ */
+
+
+
+
+
+
+
+
+
+
         //LocationBarcodeInput 텍스트 뷰 setFilters
         LocationBarcodeInput.setFilters(new InputFilter[]{new InputFilter() {
             @Override
@@ -433,8 +633,8 @@ public class BarcodeInput extends AppCompatActivity {
 
 
 
-        back = findViewById(R.id.back1);
-        logout = findViewById(R.id.logout1);
+        back = findViewById(R.id.back);
+        logout = findViewById(R.id.logout);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

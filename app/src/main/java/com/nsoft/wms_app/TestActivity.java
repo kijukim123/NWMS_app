@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,9 @@ public class TestActivity extends AppCompatActivity {
     private String   Sbarcode;
     private String   mTvResult;
 
+    private ImageButton back;
+    private ImageButton logout;
+
     Connection connect;              //database Connect
     String ConnectionResult = "";
 
@@ -80,6 +84,32 @@ public class TestActivity extends AppCompatActivity {
         TVbarcode = findViewById(R.id.tv_barcode);
         TVbarcode2 = findViewById(R.id.tv_barcode2);
         button = findViewById(R.id.btnUrl);
+
+        back = findViewById(R.id.back);
+        logout = findViewById(R.id.logout);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext()
+
+
+
+
+
+
+                        , PopupActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         ArrayList<String> array_bar = new ArrayList<>();

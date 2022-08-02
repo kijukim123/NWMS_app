@@ -7,12 +7,13 @@
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/drawable/colors.xml" value="0.3155" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/drawable/edge.xml" value="0.2275" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/drawable/edge2.xml" value="0.2285" />
+        <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/action_bar.xml" value="0.2760416666666667" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_barcode_receiving.xml" value="0.33" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_popup_logout.xml" value="0.3515625" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_register.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_test.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/activity_test.xml" value="0.25" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/barcode_input_listview_cancel.xml" value="0.3637469586374696" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/barcode_input_listview_input.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/nsoft/AndroidStudioProjects/WMS_app/app/src/main/res/layout/barcode_input_main.xml" value="0.36614583333333334" />

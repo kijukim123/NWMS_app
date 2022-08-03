@@ -169,15 +169,19 @@ public class BarcodeMove extends AppCompatActivity {
                                 System.out.println(SPreInput);
                                 if(connect!=null){
                                     //입고처리 프로시저 돌리기
-                                    String query = "EXEC dbo.SP_PDA_WM00010_SAVE_VALIDATION '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'";
+                                    String query = "EXEC dbo.SP_PDA_WM00020_SAVE_VALIDATION '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'";
                                     System.out.println("EXEC dbo.SP_PDA_WM00010_SAVE_VALIDATION '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'");
                                     Statement st = connect.createStatement();
                                     ResultSet rs = st.executeQuery(query);
 
                                     while (rs.next()){
-                                        System.out.println(rs.getString(2) + "/////////////////////////////////////////");
+                                        System.out.println(rs.getString(1) + "/////////////////////////////////////////");
                                         //입고가 제대로 됐을 경우
-                                        if(rs.getString(2).isEmpty()==true) {
+                                        if(rs.getString(1).equals("T")) {
+                                            //팝업 열기
+                                            Intent intent = new Intent(getApplicationContext(), BarcodeMovePopup.class);
+                                            startActivity(intent);
+
                                             try{
                                                 if(connect!=null){  //데이터베이스 저장 프로시저 실행(TB_WM_BCOD)
                                                     String query3 = "EXEC dbo.SP_PDA_WM00010_SAVE '" + SPreInputR + "','" + SPreInputA + "','" + UserId +  "','ko'";

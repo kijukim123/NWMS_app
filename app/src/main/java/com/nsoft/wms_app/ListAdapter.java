@@ -1,0 +1,99 @@
+package com.nsoft.wms_app;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class ListAdapter extends BaseAdapter{
+
+    public ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>();
+
+
+    @Override
+    public int getCount() {
+        return listViewItemList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return listViewItemList.get(position) ;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position ;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        final int pos = position;
+        final Context context = parent.getContext();
+
+        // "listview_item" Layout을 inflate하여 convertView 참조 획득.
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.listitemrow, parent, false);
+        }
+
+        // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
+        TextView textView1 = (TextView) convertView.findViewById(R.id.textView1);
+        TextView textView2 = (TextView) convertView.findViewById(R.id.textView2);
+        TextView textView3 = (TextView) convertView.findViewById(R.id.textView3);
+        TextView textView4 = (TextView) convertView.findViewById(R.id.textView4);
+
+        // Data Set(filteredItemList)에서 position에 위치한 데이터 참조 획득
+        ListViewItem listViewItem = listViewItemList.get(position);
+
+        textView1.setText(listViewItem.getRowtext1());
+        textView2.setText(listViewItem.getRowtext2());
+        textView3.setText(listViewItem.getRowtext3());
+        textView4.setText(listViewItem.getRowtext4());
+
+/*
+        LinearLayout click_layout = (LinearLayout) convertView.findViewById(R.id.click_layout);
+        click_layout.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                click_layout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+*/
+        return convertView;
+    }
+
+    public void addItem(String text1, String text2, String text3, String text4) {
+        ListViewItem item = new ListViewItem();
+        item.setRowtext1(text1);
+        item.setRowtext2(text2);
+        item.setRowtext3(text3);
+        item.setRowtext4(text4);
+
+        listViewItemList.add(item);
+    }
+
+    public void clearItem(){
+        listViewItemList.clear();
+    }
+
+
+/*
+    static final long MIN_CLICK_INTERVAL = 600;
+    long mLastClickTime =0;
+
+    public abstract void onSingleClick (View v);
+    @Override
+    public void onClick(View v) {
+        long currentClickTime = SystemClock.uptimeMillis();
+        long elapsedTime = currentClickTime - mLastClickTime;
+        mLastClickTime = currentClickTime;
+
+        //중복 클릭 아닌 경우
+        if(elapsedTime > MIN_CLICK_INTERVAL){
+            onSingleClick(v);
+        }
+    }*/
+}

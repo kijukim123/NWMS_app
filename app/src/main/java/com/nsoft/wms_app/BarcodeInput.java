@@ -625,6 +625,7 @@ public class BarcodeInput extends AppCompatActivity {
                 LIST_Name_Input.clear();
                 LIST_Number_Input.clear();
                 LIST_Barcode_Input.clear();
+                LocationBarcodeInput.setText("");
                 CustomListBarcodeInput adapterInput = new CustomListBarcodeInput(BarcodeInput.this);
                 BarcodeInputListview = (ListView) findViewById(R.id.listview_barcode_input);
                 BarcodeInputListview.setAdapter(adapterInput);
